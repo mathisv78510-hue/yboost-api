@@ -1,13 +1,32 @@
+'use client';
+
 import Link from "next/link";
+import { useRouter } from "next/navigation";
+import { FormEvent } from "react";
 
 export default function Navbar() {
+  const router = useRouter();
+
+  const handleSearch = (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    const formData = new FormData(e.currentTarget);
+    const query = formData.get('q') as string;
+    if (query.trim()) {
+      router.push(`/plats?search=${encodeURIComponent(query)}`);
+    } else {
+      router.push('/plats');
+    }
+  };
+
   return (
     <nav className="bg-amber-900/90 backdrop-blur-sm shadow-lg sticky top-0 z-50 border-b border-orange-700">
       <div className="max-w-6xl mx-auto px-6 py-4 flex items-center justify-between gap-6 nav-wrap">
-        <div className="text-2xl font-bold bg-gradient-to-r from-orange-400 to-red-500 bg-clip-text text-transparent">
-          {"Les plats du monde"}
-        </div>
-        <form className="flex w-full max-w-xs items-center gap-2 md:max-w-sm" role="search" aria-label="Recherche">
+        <Link href="/">
+          <div className="text-2xl font-bold bg-gradient-to-r from-orange-400 to-red-500 bg-clip-text text-transparent cursor-pointer">
+            {"Les plats du monde"}
+          </div>
+        </Link>
+        <form onSubmit={handleSearch} className="flex w-full max-w-xs items-center gap-2 md:max-w-sm" role="search" aria-label="Recherche">
           <input
             type="search"
             name="q"

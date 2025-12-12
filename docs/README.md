@@ -1,36 +1,52 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Les Plats du Monde
 
-## Getting Started
+Application Next.js pour recenser et explorer des plats du monde entier. Recherche par nom, type (pâtes, viande, poisson…), ingrédients (tomate, ail…), pays/région et plus.
 
-First, run the development server:
+## Aperçu
+
+- Interface avec navbar et barre de recherche globale
+- Page liste des plats: filtrage en temps réel et via l’URL (`/plats?search=...`)
+- Page détail du plat: ingrédients, étapes, infos (temps, difficulté, personnes)
+- Thème couleurs alimentaire (ambre/orange)
+
+## Installation
 
 ```bash
+npm install
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+# ouvre http://localhost:3000
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Routes principales
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+- `/` Accueil avec explication du site
+- `/plats` Liste de tous les plats
+	- Supporte `?search=mot-cle` (ex: `/plats?search=Pâtes`)
+- `/plats/[id]` Détail d’un plat
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## Utilisation de la recherche
 
-## Learn More
+- Dans la navbar: saisissez un mot clé puis "Chercher" → redirection vers `/plats?search=...`
+- Sur la page `/plats`: la barre de recherche filtre en temps réel (nom, type, pays, région)
 
-To learn more about Next.js, take a look at the following resources:
+Exemples:
+- `Pâtes` → Carbonara, Pasta à la tomate, Lasagne
+- `Tomate` → Pasta à la tomate, Tomate farcie
+- `Viande` → Tajine, Coq au vin, Steak frites, Poulet tandoori
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Structure
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+- `src/components/navbar.tsx` Navbar + recherche URL
+- `src/app/plats/page.tsx` Liste + filtre
+- `src/app/plats/[id]/page.tsx` Détail du plat
+- `src/components/explication.tsx` Section d’explication
 
-## Deploy on Vercel
+## À brancher sur la DB
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+Les données sont actuellement en exemple. Branchez vos appels API pour alimenter:
+- `src/app/plats/page.tsx`: remplacer le tableau de plats par les données DB
+- `src/app/plats/[id]/page.tsx`: récupérer un plat par `id`
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## Déploiement
+
+Déployable sur Vercel ou tout hébergeur Node/Next.

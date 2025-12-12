@@ -1,7 +1,7 @@
 'use client';
 
 import Link from 'next/link';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, use } from 'react';
 
 interface Ingredient {
   nom: string;
@@ -23,7 +23,8 @@ interface PlatDetail {
   personnes: number;
 }
 
-export default function PlatDetailPage({ params }: { params: { id: string } }) {
+export default function PlatDetailPage({ params }: { params: Promise<{ id: string }> }) {
+  const resolvedParams = use(params);
   const [plat, setPlat] = useState<PlatDetail | null>(null);
   const [loading, setLoading] = useState(true);
 
@@ -92,9 +93,9 @@ export default function PlatDetailPage({ params }: { params: { id: string } }) {
       },
     };
 
-    setPlat(exemplePlats[params.id] || null);
+    setPlat(exemplePlats[resolvedParams.id] || null);
     setLoading(false);
-  }, [params.id]);
+  }, [resolvedParams.id]);
 
   if (loading) {
     return (

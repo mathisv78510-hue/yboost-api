@@ -2,7 +2,7 @@ export default function Explication() {
   return (
     <section className="bg-gradient-to-b from-amber-50 to-orange-50 py-16 px-6">
       <div className="max-w-4xl mx-auto">
-        <h2 className="text-4xl font-bold text-amber-900 mb-8 text-center">À propos de Les Plats du Monde</h2>
+        <h2 className="text-4xl font-bold text-amber-900 mb-8 text-center">À propos des Plats du Monde</h2>
         
         <div className="space-y-6 text-gray-700">
           <p className="text-lg leading-relaxed">
