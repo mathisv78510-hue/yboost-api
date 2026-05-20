@@ -3,7 +3,9 @@
     "allow": [
       "Bash(Get-ChildItem -Path \"c:\\\\Users\\\\User\\\\Documents\\\\projet_ynov\\\\yboost-api\" -Recurse -Force)",
       "Bash(Select-Object -ExpandProperty FullName)",
-      "Bash(Sort-Object)"
+      "Bash(Sort-Object)",
+      "Bash(npm install *)",
+      "Bash(echo \"exit: $?\")"
     ]
   }
 }

@@ -14,7 +14,7 @@ export function FormRecette({ onRecetteCreated }: FormRecetteProps) {
     continent: '',
     type: '',
     description: '',
-    piquant: 0,
+    difficulty: 0,
     temps: 30,
   });
   const [loading, setLoading] = useState(false);
@@ -24,7 +24,7 @@ export function FormRecette({ onRecetteCreated }: FormRecetteProps) {
     const { name, value } = e.target;
     setFormData(prev => ({
       ...prev,
-      [name]: name === 'piquant' || name === 'temps' ? parseInt(value) : value,
+      [name]: name === 'difficulty' || name === 'temps' ? parseInt(value) : value,
     }));
   };
 
@@ -48,7 +48,7 @@ export function FormRecette({ onRecetteCreated }: FormRecetteProps) {
       }
 
       setMessage(`✅ Recette "${formData.nom}" créée avec succès!`);
-      setFormData({ nom: '', pays: '', region: '', continent: '', type: '', description: '', piquant: 0, temps: 30 });
+      setFormData({ nom: '', pays: '', region: '', continent: '', type: '', description: '', difficulty: 0, temps: 30 });
       onRecetteCreated?.();
     } catch (error) {
       setMessage('❌ Erreur lors de la création');
@@ -159,14 +159,14 @@ export function FormRecette({ onRecetteCreated }: FormRecetteProps) {
         {/* Ligne 4: Piquant, Temps */}
         <div className="grid grid-cols-2 gap-4">
           <div>
-            <label htmlFor="piquant" className="block text-sm font-medium text-gray-700">
-              Niveau de piquant (0-5)
+            <label htmlFor="difficulty" className="block text-sm font-medium text-gray-700">
+              Niveau de difficulté (0-5)
             </label>
             <input
               type="number"
-              id="piquant"
-              name="piquant"
-              value={formData.piquant}
+              id="difficulty"
+              name="difficulty"
+              value={formData.difficulty}
               onChange={handleChange}
               min="0"
               max="5"

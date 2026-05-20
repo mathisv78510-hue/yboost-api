@@ -4,7 +4,7 @@ import { useState, useRef } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 
-const inputClass = 'w-full p-4 bg-gray-50 border border-gray-100 rounded-2xl focus:ring-2 focus:ring-orange-500 outline-none transition-all text-gray-900';
+const inputClass = 'w-full p-3 bg-white border border-gray-300 rounded-md focus:ring-1 focus:ring-orange-500 focus:border-orange-500 outline-none text-sm text-gray-900';
 
 export default function AjoutPlatPage() {
   const router = useRouter();
@@ -14,7 +14,7 @@ export default function AjoutPlatPage() {
   const [formData, setFormData] = useState({
     nom: '', pays: '', region: '', continent: '',
     type: 'Plat principal', regime: '', description: '',
-    image: '', piquant: 0, temps: 30,
+    image: '', difficulty: 0, temps: 30,
   });
 
   const [ingredients, setIngredients] = useState<string[]>([]);
@@ -27,7 +27,7 @@ export default function AjoutPlatPage() {
     const { name, value } = e.target;
     setFormData((prev) => ({
       ...prev,
-      [name]: name === 'piquant' || name === 'temps' ? Number(value) : value,
+      [name]: name === 'difficulty' || name === 'temps' ? Number(value) : value,
     }));
   };
 
@@ -79,39 +79,38 @@ export default function AjoutPlatPage() {
   };
 
   return (
-    <div className="min-h-screen bg-[#f8f9fa] pb-20">
-      <main className="max-w-3xl mx-auto px-6 pt-12">
+    <div className="min-h-screen bg-gray-50 pb-16">
+      <main className="max-w-2xl mx-auto px-6 pt-8">
 
-        <Link href="/plats" className="inline-flex items-center gap-2 text-gray-500 hover:text-orange-600 font-bold mb-8 transition-colors group">
-          <span className="text-xl group-hover:-translate-x-1 transition-transform">←</span>
-          Retour au catalogue
+        <Link href="/plats" className="inline-flex items-center gap-1.5 text-sm text-gray-500 hover:text-gray-800 transition-colors mb-6">
+          ← Retour au catalogue
         </Link>
 
-        <div className="bg-white rounded-[2.5rem] shadow-2xl border border-gray-100 overflow-hidden">
-          <div className="bg-gradient-to-r from-orange-500 to-red-600 p-10 text-white text-center">
-            <h1 className="text-4xl font-black italic mb-2">Ajouter un Plat</h1>
-            <p className="opacity-90 font-medium">Partagez une nouvelle saveur avec le monde</p>
+        <div className="bg-white rounded-lg border border-gray-200 overflow-hidden">
+          <div className="bg-orange-600 px-8 py-7 text-white">
+            <h1 className="text-2xl font-bold mb-1">Ajouter un plat</h1>
+            <p className="text-orange-100 text-sm">Partagez une nouvelle saveur avec le monde</p>
           </div>
 
-          <form onSubmit={handleSubmit} className="p-8 md:p-12 space-y-8">
+          <form onSubmit={handleSubmit} className="p-6 md:p-8 space-y-7">
             {message.text && (
-              <div className={`p-4 rounded-2xl text-center font-bold ${
-                message.type === 'success' ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-700'
+              <div className={`p-3 rounded-md text-sm font-medium ${
+                message.type === 'success' ? 'bg-green-50 text-green-700 border border-green-200' : 'bg-red-50 text-red-700 border border-red-200'
               }`}>
                 {message.text}
               </div>
             )}
 
-            {/* ── Infos générales ── */}
+            {/* Infos générales */}
             <div>
-              <p className="text-xs font-black uppercase tracking-widest text-gray-300 mb-4">Informations générales</p>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <div className="space-y-2">
-                  <label className="text-xs font-black uppercase tracking-widest text-gray-400 ml-2">Nom du plat</label>
+              <p className="text-xs font-semibold text-gray-400 uppercase tracking-wide mb-4">Informations générales</p>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div className="space-y-1.5">
+                  <label className="text-xs font-medium text-gray-600">Nom du plat</label>
                   <input required name="nom" value={formData.nom} onChange={handleChange} className={inputClass} placeholder="Ex: Poulet Yassa" />
                 </div>
-                <div className="space-y-2">
-                  <label className="text-xs font-black uppercase tracking-widest text-gray-400 ml-2">Type de plat</label>
+                <div className="space-y-1.5">
+                  <label className="text-xs font-medium text-gray-600">Type de plat</label>
                   <select name="type" value={formData.type} onChange={handleChange} className={inputClass}>
                     <option>Entrée</option>
                     <option>Plat principal</option>
@@ -119,8 +118,8 @@ export default function AjoutPlatPage() {
                     <option>Street Food</option>
                   </select>
                 </div>
-                <div className="space-y-2">
-                  <label className="text-xs font-black uppercase tracking-widest text-gray-400 ml-2">Régime alimentaire</label>
+                <div className="space-y-1.5">
+                  <label className="text-xs font-medium text-gray-600">Régime alimentaire</label>
                   <select name="regime" value={formData.regime} onChange={handleChange} className={inputClass}>
                     <option value="">Aucun / Non spécifié</option>
                     <option>Végétarien</option>
@@ -131,42 +130,42 @@ export default function AjoutPlatPage() {
                     <option>Casher</option>
                   </select>
                 </div>
-                <div className="space-y-2">
-                  <label className="text-xs font-black uppercase tracking-widest text-gray-400 ml-2">Pays</label>
+                <div className="space-y-1.5">
+                  <label className="text-xs font-medium text-gray-600">Pays</label>
                   <input required name="pays" value={formData.pays} onChange={handleChange} className={inputClass} placeholder="Ex: Sénégal" />
                 </div>
-                <div className="space-y-2">
-                  <label className="text-xs font-black uppercase tracking-widest text-gray-400 ml-2">Région</label>
+                <div className="space-y-1.5">
+                  <label className="text-xs font-medium text-gray-600">Région</label>
                   <input name="region" value={formData.region} onChange={handleChange} className={inputClass} placeholder="Ex: Casamance" />
                 </div>
-                <div className="space-y-2">
-                  <label className="text-xs font-black uppercase tracking-widest text-gray-400 ml-2">Continent</label>
+                <div className="space-y-1.5">
+                  <label className="text-xs font-medium text-gray-600">Continent</label>
                   <input name="continent" value={formData.continent} onChange={handleChange} className={inputClass} placeholder="Ex: Afrique" />
                 </div>
-                <div className="space-y-2">
-                  <label className="text-xs font-black uppercase tracking-widest text-gray-400 ml-2">Temps (min)</label>
+                <div className="space-y-1.5">
+                  <label className="text-xs font-medium text-gray-600">Temps (min)</label>
                   <input type="number" name="temps" value={formData.temps} onChange={handleChange} className={inputClass} />
                 </div>
               </div>
 
               {/* Piquant */}
-              <div className="space-y-2 mt-6">
-                <div className="flex justify-between items-center px-2">
-                  <label className="text-xs font-black uppercase tracking-widest text-gray-400">Niveau de piquant</label>
-                  <span className="font-bold text-orange-600">{formData.piquant}/5 🌶️</span>
+              <div className="space-y-1.5 mt-4">
+                <div className="flex justify-between items-center">
+                  <label className="text-xs font-medium text-gray-600">Niveau de difficulté</label>
+                  <span className="text-sm font-medium text-orange-600">{formData.difficulty}/5 ⭐</span>
                 </div>
-                <input type="range" name="piquant" min="0" max="5" value={formData.piquant} onChange={handleChange} className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-orange-500" />
+                <input type="range" name="difficulty" min="0" max="5" value={formData.difficulty} onChange={handleChange} className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-orange-500" />
               </div>
 
-              {/* Description courte */}
-              <div className="space-y-2 mt-6">
-                <label className="text-xs font-black uppercase tracking-widest text-gray-400 ml-2">Description courte</label>
+              {/* Description */}
+              <div className="space-y-1.5 mt-4">
+                <label className="text-xs font-medium text-gray-600">Description courte</label>
                 <textarea name="description" value={formData.description} onChange={handleChange} rows={2} className={`${inputClass} resize-none`} placeholder="Résumez ce plat en une ou deux phrases..." />
               </div>
 
               {/* Image URL */}
-              <div className="space-y-2 mt-6">
-                <label className="text-xs font-black uppercase tracking-widest text-gray-400 ml-2">Image (URL)</label>
+              <div className="space-y-1.5 mt-4">
+                <label className="text-xs font-medium text-gray-600">Image (URL)</label>
                 <input
                   type="url"
                   name="image"
@@ -176,7 +175,7 @@ export default function AjoutPlatPage() {
                   placeholder="https://exemple.com/image.jpg"
                 />
                 {formData.image && (
-                  <div className="mt-2 rounded-2xl overflow-hidden h-44 border border-gray-100">
+                  <div className="mt-2 rounded-md overflow-hidden h-40 border border-gray-200">
                     <img
                       src={formData.image}
                       alt="Aperçu"
@@ -188,30 +187,23 @@ export default function AjoutPlatPage() {
               </div>
             </div>
 
-            {/* ── Ingrédients ── */}
+            {/* Ingrédients */}
             <div>
-              <p className="text-xs font-black uppercase tracking-widest text-gray-300 mb-4">
-                🥕 Ingrédients
-                {ingredients.length > 0 && (
-                  <span className="ml-2 bg-orange-100 text-orange-600 px-2 py-0.5 rounded-full text-xs normal-case font-bold">
-                    {ingredients.length}
-                  </span>
-                )}
+              <p className="text-xs font-semibold text-gray-400 uppercase tracking-wide mb-4">
+                Ingrédients{ingredients.length > 0 && <span className="ml-2 bg-orange-100 text-orange-600 px-2 py-0.5 rounded text-xs normal-case font-medium">{ingredients.length}</span>}
               </p>
 
-              {/* Liste */}
               {ingredients.length > 0 && (
                 <div className="flex flex-wrap gap-2 mb-3">
                   {ingredients.map((ing, i) => (
-                    <span key={i} className="flex items-center gap-1.5 bg-orange-50 border border-orange-200 text-orange-800 text-sm font-semibold px-3 py-1.5 rounded-full">
+                    <span key={i} className="flex items-center gap-1 bg-orange-50 border border-orange-200 text-orange-800 text-xs font-medium px-2.5 py-1 rounded">
                       {ing}
-                      <button type="button" onClick={() => removeIngredient(i)} className="text-orange-400 hover:text-red-500 transition-colors font-black leading-none">×</button>
+                      <button type="button" onClick={() => removeIngredient(i)} className="text-orange-400 hover:text-red-500 transition-colors font-bold ml-0.5">×</button>
                     </span>
                   ))}
                 </div>
               )}
 
-              {/* Input */}
               <div className="flex gap-2">
                 <input
                   type="text"
@@ -224,41 +216,34 @@ export default function AjoutPlatPage() {
                 <button
                   type="button"
                   onClick={addIngredient}
-                  className="px-5 py-4 bg-orange-500 hover:bg-orange-600 text-white font-black rounded-2xl transition-all active:scale-95"
+                  className="px-4 py-3 bg-orange-500 hover:bg-orange-600 text-white font-bold rounded-md transition-colors text-sm"
                 >
                   +
                 </button>
               </div>
-              <p className="text-xs text-gray-400 mt-1 ml-2">Appuyez sur Entrée ou + pour ajouter</p>
+              <p className="text-xs text-gray-400 mt-1">Appuyez sur Entrée ou + pour ajouter</p>
             </div>
 
-            {/* ── Étapes de préparation ── */}
+            {/* Étapes */}
             <div>
-              <p className="text-xs font-black uppercase tracking-widest text-gray-300 mb-4">
-                👨‍🍳 Étapes de préparation
-                {etapes.length > 0 && (
-                  <span className="ml-2 bg-orange-100 text-orange-600 px-2 py-0.5 rounded-full text-xs normal-case font-bold">
-                    {etapes.length} étape{etapes.length > 1 ? 's' : ''}
-                  </span>
-                )}
+              <p className="text-xs font-semibold text-gray-400 uppercase tracking-wide mb-4">
+                Étapes de préparation{etapes.length > 0 && <span className="ml-2 bg-orange-100 text-orange-600 px-2 py-0.5 rounded text-xs normal-case font-medium">{etapes.length} étape{etapes.length > 1 ? 's' : ''}</span>}
               </p>
 
-              {/* Liste des étapes */}
               {etapes.length > 0 && (
                 <div className="space-y-2 mb-3">
                   {etapes.map((etape, i) => (
-                    <div key={i} className="flex gap-3 items-start bg-gray-50 border border-gray-100 rounded-2xl p-4">
-                      <span className="flex-shrink-0 w-7 h-7 rounded-full bg-gradient-to-br from-orange-500 to-red-600 text-white text-xs font-black flex items-center justify-center">
+                    <div key={i} className="flex gap-3 items-start bg-gray-50 border border-gray-100 rounded-md p-3">
+                      <span className="flex-shrink-0 w-6 h-6 rounded-full bg-orange-500 text-white text-xs font-bold flex items-center justify-center">
                         {i + 1}
                       </span>
                       <p className="flex-1 text-gray-700 text-sm leading-relaxed">{etape}</p>
-                      <button type="button" onClick={() => removeEtape(i)} className="text-gray-300 hover:text-red-500 transition-colors font-black text-lg leading-none flex-shrink-0">×</button>
+                      <button type="button" onClick={() => removeEtape(i)} className="text-gray-300 hover:text-red-500 transition-colors font-bold text-base flex-shrink-0">×</button>
                     </div>
                   ))}
                 </div>
               )}
 
-              {/* Input */}
               <div className="flex gap-2 items-end">
                 <textarea
                   ref={etapeRef}
@@ -272,28 +257,28 @@ export default function AjoutPlatPage() {
                   }}
                   rows={2}
                   className={`${inputClass} flex-1 resize-none`}
-                  placeholder={`Étape ${etapes.length + 1} : décrivez la préparation...`}
+                  placeholder={`Étape ${etapes.length + 1}...`}
                 />
                 <button
                   type="button"
                   onClick={addEtape}
-                  className="px-5 py-4 bg-orange-500 hover:bg-orange-600 text-white font-black rounded-2xl transition-all active:scale-95 self-stretch"
+                  className="px-4 bg-orange-500 hover:bg-orange-600 text-white font-bold rounded-md transition-colors text-sm self-stretch"
                 >
                   +
                 </button>
               </div>
-              <p className="text-xs text-gray-400 mt-1 ml-2">Entrée pour ajouter · Shift+Entrée pour un saut de ligne</p>
+              <p className="text-xs text-gray-400 mt-1">Entrée pour ajouter · Shift+Entrée pour un saut de ligne</p>
             </div>
 
-            {/* ── Bouton ── */}
+            {/* Bouton submit */}
             <button
               type="submit"
               disabled={loading}
-              className={`w-full py-5 rounded-[1.5rem] font-black text-xl shadow-xl transition-all transform active:scale-95 flex items-center justify-center gap-3 ${
-                loading ? 'bg-gray-400 cursor-not-allowed' : 'bg-[#0F172A] text-white hover:bg-black'
+              className={`w-full py-3 rounded-md font-semibold text-white text-sm transition-colors ${
+                loading ? 'bg-gray-400 cursor-not-allowed' : 'bg-gray-900 hover:bg-black'
               }`}
             >
-              {loading ? 'Création en cours...' : '🚀 Publier la recette'}
+              {loading ? 'Création en cours...' : 'Publier la recette'}
             </button>
           </form>
         </div>

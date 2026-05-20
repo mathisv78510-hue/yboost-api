@@ -1,25 +1,58 @@
 'use client';
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect } from 'react';
+import { useAuth } from './useAuth';
 
 export function useFavoris() {
+  const { user, token } = useAuth();
   const [favoris, setFavoris] = useState<number[]>([]);
 
   useEffect(() => {
-    try {
+    if (token) {
+      fetch('/api/favoris', {
+        headers: { Authorization: `Bearer ${token}` },
+      })
+        .then((res) => res.json())
+        .then((data) => {
+          if (data.favoris) setFavoris(data.favoris);
+        });
+    } else {
       const stored = localStorage.getItem('favoris_plats');
       if (stored) setFavoris(JSON.parse(stored));
-    } catch {}
-  }, []);
+    }
+  }, [token, user]);
 
-  const toggle = useCallback((id: number) => {
-    setFavoris((prev) => {
-      const next = prev.includes(id) ? prev.filter((x) => x !== id) : [...prev, id];
-      try { localStorage.setItem('favoris_plats', JSON.stringify(next)); } catch {}
-      return next;
-    });
-  }, []);
+  const toggle = async (id: number) => {
+    if (token) {
+      if (favoris.includes(id)) {
+        await fetch(`/api/favoris/${id}`, {
+          method: 'DELETE',
+          headers: { Authorization: `Bearer ${token}` },
+        });
+        setFavoris(favoris.filter((x) => x !== id));
+      } else {
+        await fetch('/api/favoris', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${token}`,
+          },
+          body: JSON.stringify({ recette_id: id }),
+        });
+        setFavoris([...favoris, id]);
+      }
+    } else {
+      let next;
+      if (favoris.includes(id)) {
+        next = favoris.filter((x) => x !== id);
+      } else {
+        next = [...favoris, id];
+      }
+      localStorage.setItem('favoris_plats', JSON.stringify(next));
+      setFavoris(next);
+    }
+  };
 
-  const isFavori = useCallback((id: number) => favoris.includes(id), [favoris]);
+  const isFavori = (id: number) => favoris.includes(id);
 
   return { favoris, toggle, isFavori };
 }
